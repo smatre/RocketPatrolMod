@@ -65,6 +65,24 @@ class Play extends Phaser.Scene {
            }),
            frameRate: 30
         });
+        
+        //initialize score
+        this.p1Score = 0;
+        //display score
+        let scoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, 
+            borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
 
     }
 
@@ -81,15 +99,15 @@ class Play extends Phaser.Scene {
         //check collisions 
         if (this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
-            this.ship03.reset();
+            this.shipExplode(this.ship03);
         }
         if (this.checkCollision(this.p1Rocket, this.ship02)) {
             this.p1Rocket.reset();
-            this.ship02.reset();
+            this.shipExplode(this.ship02);
         }
         if (this.checkCollision(this.p1Rocket, this.ship01)) {
             this.p1Rocket.reset();
-            this.ship01.reset();
+            this.shipExplode(this.ship01);
         }
     }
 
@@ -103,5 +121,24 @@ class Play extends Phaser.Scene {
         } else {
             return false;
         } 
+    }
+
+    shipExplode(ship) {
+        //temporarily hide ship
+        ship.alpha = 0;
+        //create explosion sprite at ship's position
+        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
+        boom.anims.play('explode');
+        boom.on('animationcomplete', () => {
+            ship.reset();
+            ship.alpha = 1;
+            boom.destroy();
+        });
+
+        // score add and repaint
+        this.p1Score += ship.points;
+        //replaces contents with new value
+        this.scoreLeft.text = this.p1Score;
+
     }
 }
