@@ -7,14 +7,14 @@ class Play extends Phaser.Scene {
     // init(), preload(), create(), update()
     preload() {
         //load image/tile sprites
-        this.load.image('rocket', 'assets/rocket.png');
-        this.load.image('spaceship', 'assets/spaceship.png');
-        this.load.image('starfield', 'assets/starfield.png');
+        this.load.image('rocket', 'assets/frog.png');
+        this.load.image('spaceship', 'assets/fly.png');
+        this.load.image('starfield', 'assets/sky.png');
         //load spritesheet
-        this.load.spritesheet('explosion', 'assets/explosion.png', {
-            frameWidth: 64,
+        this.load.spritesheet('explosion', 'assets/splat.png', {
+            frameWidth: 30,
             frameHeight: 32,
-            startFrame: 9
+            startFrame: 30
         });
     }
 
@@ -23,34 +23,37 @@ class Play extends Phaser.Scene {
         //create starfield as property of object so have access to in other functions
         this.starfield = this.add.tileSprite(0, 0, game.config.width, game.config.height, 
             'starfield').setOrigin(0, 0);
-        // green UI background
+        // blue UI background
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width,
-            borderUISize * 2, 0x00FF00).setOrigin(0, 0);
+            borderUISize * 2, 0x00BFFC).setOrigin(0, 0);
+        //add countdown timer
+        this.timeInSec = game.settings.gameTimer;
+
 
         //white borders
-        this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin
-        (0,0);
-        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, 
-            borderUISize, 0xFFFFFF).setOrigin(0,0);
-        this.add.rectangle(0,0, borderUISize, game.config.height, 0xFFFFFF).setOrigin
-        (0, 0);
-        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.
-            config.height, 0xFFFFFF).setOrigin(0,0);
+        // this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin
+        // (0,0);
+        // this.add.rectangle(0, game.config.height - borderUISize, game.config.width, 
+        //     borderUISize, 0xFFFFFF).setOrigin(0,0);
+        // this.add.rectangle(0,0, borderUISize, game.config.height, 0xFFFFFF).setOrigin
+        // (0, 0);
+        // this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.
+        //     config.height, 0xFFFFFF).setOrigin(0,0);
 
         // add rocket(player 1)
         this.p1Rocket  = new Rocket(this, game.config.width / 2, game.config.height - 
-            borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+            borderUISize - borderPadding * 4, 'rocket').setOrigin(0.5, 0);
 
         // add spaceship (x3)
         this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, 
-            borderUISize * 4, 'spaceship', 0, 30).setOrigin(0, 0);
+            borderUISize * 6, 'spaceship', 0, 30).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, 
             borderUISize * 5 + borderPadding * 2, 'spaceship', 0, 20).setOrigin(0, 0);
-            this.ship03 = new Spaceship(this, game.config.width, 
-                borderUISize * 6 + borderPadding * 4, 'spaceship', 0, 10).setOrigin(0, 0);
+        this.ship03 = new Spaceship(this, game.config.width, 
+            borderUISize * 6 + borderPadding * 4, 'spaceship', 0, 10).setOrigin(0, 0);
 
         //define keys
-        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -60,7 +63,7 @@ class Play extends Phaser.Scene {
            key: 'explode',
            frames: this.anims.generateFrameNumbers('explosion', {
                start: 0,
-               end: 9,
+               end: 5,
                first: 0
            }),
            frameRate: 30
@@ -72,8 +75,8 @@ class Play extends Phaser.Scene {
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            backgroundColor: '#FFFFFF',
+            color: '#000000',
             align: 'right',
             padding: {
                 top: 5,
@@ -135,10 +138,10 @@ class Play extends Phaser.Scene {
 
     checkCollision(rocket, ship) {
         //simple AABB checking
-        if (rocket.x < ship.x + ship.width && 
-            rocket.x + rocket.width > ship.x &&
-            rocket.y < ship.y + ship.height &&
-            rocket.height + rocket.y > ship.y) {
+        if (rocket.x < ship.x + ship.width / 3 && 
+            rocket.x + rocket.width / 5 > ship.x &&
+            rocket.y < ship.y + ship.height / 5 &&
+            rocket.height / 5 + rocket.y > ship.y) {
                 return true;
         } else {
             return false;
