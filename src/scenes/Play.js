@@ -10,6 +10,8 @@ class Play extends Phaser.Scene {
         this.load.image('rocket', 'assets/frog.png');
         this.load.image('spaceship', 'assets/fly.png');
         this.load.image('starfield', 'assets/sky.png');
+        this.load.image('princess', 'assets/princess.png');
+        this.load.image('heart', 'assets/heart.png');
         //load spritesheet
         this.load.spritesheet('explosion', 'assets/splat.png', {
             frameWidth: 30,
@@ -85,6 +87,10 @@ class Play extends Phaser.Scene {
             borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
          //add countdown timer
         this.timeInSec = game.settings.gameTimer / 1000;
+        this.minScore = this.add.text(this.game.config.width/2
+            -borderUISize - borderPadding, 
+            borderUISize + borderPadding * 2, "Get a minimum \nscore of 200 to win", 
+            {font: '20px Arial', fill: '#000000', align: 'center'})
         this.timerText = this.add.text(game.config.width - 
             borderPadding - borderUISize * 2, borderUISize + borderPadding * 2,
             "0:00", {font: '20px Arial', fill: '#FF0000', align: 'center'});
@@ -98,6 +104,16 @@ class Play extends Phaser.Scene {
         // 60-second play clock
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
+            //won game
+            if (this.p1Score >= 200) {
+                this.add.text(game.config.width/2, game.config.height/2 - 64, 
+                    'YOU WON!', scoreConfig).setOrigin(0.5);
+                this.heart = this.add.image(this.p1Rocket.x + this.p1Rocket.width/2, 
+                    game.config.height - borderUISize - borderPadding * 2, 'heart');
+                this.heart.setDisplaySize(150, 150);
+                this.princess = this.add.image(this.p1Rocket.x + this.p1Rocket.width + 5, 
+                    game.config.height - borderUISize - borderPadding * 3, 'princess');
+            }
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 64, 
                 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
