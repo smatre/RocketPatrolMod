@@ -26,9 +26,6 @@ class Play extends Phaser.Scene {
         // blue UI background
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width,
             borderUISize * 2, 0x00BFFC).setOrigin(0, 0);
-        //add countdown timer
-        this.timeInSec = game.settings.gameTimer;
-
 
         //white borders
         // this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin
@@ -86,6 +83,14 @@ class Play extends Phaser.Scene {
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, 
             borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
+         //add countdown timer
+        this.timeInSec = game.settings.gameTimer / 1000;
+        this.timerText = this.add.text(game.config.width - 
+            borderPadding - borderUISize * 2, borderUISize + borderPadding * 2,
+            "0:00", {font: '20px Arial', fill: '#FF0000', align: 'center'});
+        //this.timerText.anchor.set(0.5, 0.5);
+        this.timer = this.time.addEvent({ delay: 1000, callback: this.updateTimer, callbackScope: this, loop: true });
+   
         
         // GAME OVER flag
         this.gameOver = false;
@@ -100,6 +105,8 @@ class Play extends Phaser.Scene {
         }, null, this);
 
     }
+
+    
 
     update() {
         //check key input for restart
@@ -167,5 +174,28 @@ class Play extends Phaser.Scene {
         //add explosion sound
         this.sound.play('sfx_explosion');
 
+    }
+    updateTimer() {
+        if (this.timeInSec > 0) {
+            this.timeInSec--;
+        }
+        var minutes = Math.floor(this.timeInSec / 60);
+        console.log(minutes);
+        var seconds = this.timeInSec - (minutes * 60);
+        var stringTimer = this.padZeros(minutes) + ":" + this.padZeros(seconds);
+        
+        this.timerText.text = stringTimer;
+        
+        
+        // if (this.timeInSec == 0) {
+        //     this.timerText.destroy();
+        // }
+    }
+
+    padZeros(num) {
+        if (num < 10) {
+            num = "0" + num;
+        }
+        return num;
     }
 }
