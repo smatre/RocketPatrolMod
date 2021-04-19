@@ -6,9 +6,9 @@ class Menu extends Phaser.Scene {
 
     preload() {
         // load audio
-        this.load.audio('sfx_select', 'assets/blip_select12.wav');
-        this.load.audio('sfx_explosion', 'assets/squish.wav');
-        this.load.audio('sfx_rocket', 'assets/bounce.wav');
+        this.load.audio('select_mode', 'assets/blip_select12.wav');
+        this.load.audio('fly_dead', 'assets/squish.wav');
+        this.load.audio('frog_jump', 'assets/bounce.wav');
         this.load.image('cover', 'assets/cover.png');
     }
 
@@ -53,7 +53,7 @@ class Menu extends Phaser.Scene {
                 spaceshipSpeed: 3,
                 gameTimer: 60000
             }
-            this.sound.play('sfx_select');
+            this.sound.play('select_mode');
             this.scene.start('playScene');
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
@@ -62,7 +62,7 @@ class Menu extends Phaser.Scene {
                 spaceshipSpeed: 4,
                 gameTimer: 45000
             }
-            this.sound.play('sfx_select');
+            this.sound.play('select_mode');
             this.scene.start('playScene');
         }
     }

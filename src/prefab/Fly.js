@@ -1,4 +1,4 @@
-class Spaceship extends Phaser.GameObjects.Sprite {
+class Fly extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame, pointValue) {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);   //add to existing scene
@@ -7,7 +7,7 @@ class Spaceship extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        // move spaceship left
+        // move fly left
         this.x -= this.moveSpeed;
         //wrap around from left to right edge
         if (this.x <= 0 - this.width) {
