@@ -17,8 +17,8 @@ class Menu extends Phaser.Scene {
         this.cover.setDisplaySize(game.config.width, game.config.height);
         //menu text configuration
         let menuConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
+            fontFamily: 'Serif',
+            fontSize: '35px',
             backgroundColor: '#FFFFFF',
             color: '#000000',
             align: 'center',
@@ -31,14 +31,15 @@ class Menu extends Phaser.Scene {
 
         //show menu text
         this.add.text(game.config.width/2, game.config.height/4.5 - borderUISize -
-            borderPadding, 'FROGGY SPLAT!', menuConfig).setOrigin(0.5);
+            borderPadding, 'Froggy Splat!', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#90E3FF';
+        menuConfig.fontSize = '30px';
         this.add.text(game.config.width/2, game.config.height/1.2, 
             'Use <--> arrows to move & (J) to jump', menuConfig).setOrigin(0.5);
         
         menuConfig.color = '#000';
         this.add.text(game.config.width/2, game.config.height/1.2 + borderUISize + borderPadding, 
-            'Press <- for Novice or -> for Expert', menuConfig).setOrigin(0.5); 
+            'Press <- for Beginner or -> for BEAST Mode', menuConfig).setOrigin(0.5); 
 
         //define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);

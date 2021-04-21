@@ -172,26 +172,34 @@ class Play extends Phaser.Scene {
             fly.alpha = 1;
             boom.destroy();
         });
-
+        
+        //increase time
+        this.timeInSec += fly.points/5;
         // score add and repaint
         this.p1Score += fly.points;
         //replaces contents with new value
         this.scoreLeft.text = this.p1Score;
         //add explosion sound
         this.sound.play('fly_dead');
+        this.successHit = true;
 
     }
 
     updateTimer() {
+        
         if (this.timeInSec > 0) {
+            console.log(this.timeInSec);
+            
             this.timeInSec--;
         }
+        
         var minutes = Math.floor(this.timeInSec / 60);
         console.log(minutes);
         var seconds = this.timeInSec - (minutes * 60);
         var stringTimer = this.padZeros(minutes) + ":" + this.padZeros(seconds);
         
         this.timerText.text = stringTimer;
+        
     }
 
     padZeros(num) {
